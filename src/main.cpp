@@ -3,27 +3,18 @@
 #include <vector>
 using namespace std;
 
-void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);
+void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);\
+
+void readIputFile(vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);
 
 void creatOutputFile(vector<string> roll, vector<string> pitch);
 
 int main(int, char**) {
     
-    string textLine;
-    vector<string> seglist, timeStamp, accelXaxis, accelYaxis, accelZaxis;
+    vector<string> timeStamp, accelXaxis, accelYaxis, accelZaxis;
     vector<string> roll, pitch;
-    
-    ifstream inputFile("attitude_exam.log");
 
-    
-    while (getline (inputFile, textLine)) {
-        seglist.push_back(textLine);
-        extractVariables(textLine, timeStamp, accelXaxis, accelYaxis, accelZaxis);
-
-    }
-
-    inputFile.close();
-
+    readIputFile(timeStamp, accelXaxis, accelYaxis, accelZaxis);
 
     // test output file
     roll.push_back("1");
@@ -43,10 +34,26 @@ void extractVariables(string textLine, vector<string>& timeStamp, vector<string>
         accelZaxis.push_back(textLine.substr(pos3+1, textLine.length()-pos3-1));
 }
 
+void readIputFile(vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis){
+    string textLine;
+    vector<string> seglist;
+
+    ifstream inputFile("attitude_exam.log");
+    
+    while (getline (inputFile, textLine)) {
+        seglist.push_back(textLine);
+        extractVariables(textLine, timeStamp, accelXaxis, accelYaxis, accelZaxis);
+    }
+
+    inputFile.close();
+}
+
 void creatOutputFile(vector<string> roll, vector<string> pitch) {
     ofstream outputFile("attitude_result.log");
+    
     for (int i = 0; i < roll.size(); i++) {
         outputFile << roll[i] << "; " << pitch[i] << endl;
     }
+
     outputFile.close();
 }
