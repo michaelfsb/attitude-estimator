@@ -5,12 +5,14 @@ using namespace std;
 
 void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);
 
+void creatOutputFile(vector<string> roll, vector<string> pitch);
+
 int main(int, char**) {
     
     string textLine;
     vector<string> seglist, timeStamp, accelXaxis, accelYaxis, accelZaxis;
+    vector<string> roll, pitch;
     
-    // Read from the text file
     ifstream inputFile("attitude_exam.log");
 
     
@@ -20,8 +22,15 @@ int main(int, char**) {
 
     }
 
-    // Close the file
     inputFile.close();
+
+
+    // test output file
+    roll.push_back("1");
+    pitch.push_back("2");
+    roll.push_back("3");
+    pitch.push_back("4");
+    creatOutputFile(roll, pitch);
 }
 
 void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis) {
@@ -32,4 +41,12 @@ void extractVariables(string textLine, vector<string>& timeStamp, vector<string>
         accelXaxis.push_back(textLine.substr(pos1+1, pos2-pos1-1));
         accelYaxis.push_back(textLine.substr(pos2+1, pos3-pos2-1));
         accelZaxis.push_back(textLine.substr(pos3+1, textLine.length()-pos3-1));
+}
+
+void creatOutputFile(vector<string> roll, vector<string> pitch) {
+    ofstream outputFile("attitude_result.log");
+    for (int i = 0; i < roll.size(); i++) {
+        outputFile << roll[i] << "; " << pitch[i] << endl;
+    }
+    outputFile.close();
 }
