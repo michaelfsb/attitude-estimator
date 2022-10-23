@@ -3,38 +3,48 @@
 #include <vector>
 using namespace std;
 
-void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);\
+struct attitude {
+    vector<string> timeStamp, roll, pitch;
+};
 
-void readIputFile(vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis);
+struct position {
+    vector<string> timeStamp, accelXaxis, accelYaxis, accelZaxis;
+};
 
-void creatOutputFile(vector<string> roll, vector<string> pitch);
+void extractVariables(string textLine, position& pos);\
+
+void readIputFile(position& pos);
+
+void creatOutputFile(attitude& att);
 
 int main(int, char**) {
-    
-    vector<string> timeStamp, accelXaxis, accelYaxis, accelZaxis;
-    vector<string> roll, pitch;
 
-    readIputFile(timeStamp, accelXaxis, accelYaxis, accelZaxis);
+    position pos;
+    attitude att;
+    
+    readIputFile(pos);
 
     // test output file
-    roll.push_back("1");
-    pitch.push_back("2");
-    roll.push_back("3");
-    pitch.push_back("4");
-    creatOutputFile(roll, pitch);
+    att.timeStamp.push_back("0");
+    att.timeStamp.push_back("0");
+    att.roll.push_back("1");
+    att.pitch.push_back("2");
+    att.roll.push_back("3");
+    att.pitch.push_back("4");
+    creatOutputFile(att);
 }
 
-void extractVariables(string textLine, vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis) {
+void extractVariables(string textLine, position& pos) {
         int pos1 = textLine.find(";");
         int pos2 = textLine.find(";", pos1+1);
         int pos3 = textLine.find(";", pos2+1);
-        timeStamp.push_back(textLine.substr(0, pos1));
-        accelXaxis.push_back(textLine.substr(pos1+1, pos2-pos1-1));
-        accelYaxis.push_back(textLine.substr(pos2+1, pos3-pos2-1));
-        accelZaxis.push_back(textLine.substr(pos3+1, textLine.length()-pos3-1));
+        pos.timeStamp.push_back(textLine.substr(0, pos1));
+        pos.accelXaxis.push_back(textLine.substr(pos1+1, pos2-pos1-1));
+        pos.accelYaxis.push_back(textLine.substr(pos2+1, pos3-pos2-1));
+        pos.accelZaxis.push_back(textLine.substr(pos3+1, textLine.length()-pos3-1));
 }
 
-void readIputFile(vector<string>& timeStamp, vector<string>& accelXaxis, vector<string>& accelYaxis, vector<string>& accelZaxis){
+void readIputFile(position& pos){
     string textLine;
     vector<string> seglist;
 
@@ -42,17 +52,17 @@ void readIputFile(vector<string>& timeStamp, vector<string>& accelXaxis, vector<
     
     while (getline (inputFile, textLine)) {
         seglist.push_back(textLine);
-        extractVariables(textLine, timeStamp, accelXaxis, accelYaxis, accelZaxis);
+        extractVariables(textLine, pos);
     }
 
     inputFile.close();
 }
 
-void creatOutputFile(vector<string> roll, vector<string> pitch) {
+void creatOutputFile(attitude& att) {
     ofstream outputFile("attitude_result.log");
     
-    for (int i = 0; i < roll.size(); i++) {
-        outputFile << roll[i] << "; " << pitch[i] << endl;
+    for (int i = 0; i < att.timeStamp.size(); i++) {
+        outputFile << att.timeStamp[i] << att.roll[i] << "; " << att.pitch[i] << endl;
     }
 
     outputFile.close();
