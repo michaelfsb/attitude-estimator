@@ -18,9 +18,9 @@ struct position {
     vector<string> timeStamp, accelXaxis, accelYaxis, accelZaxis;
 };
 
-void extractVariables(string textLine, position& pos); \
-
 void readIputFile(string fileName, position& pos);
+
+void extractVariables(string textLine, position& pos);
 
 void creatOutputFile(attitude& att);
 

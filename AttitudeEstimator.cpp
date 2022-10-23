@@ -26,15 +26,6 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-void extractVariables(string textLine, position& pos) {
-    int pos1 = textLine.find(";");
-    int pos2 = textLine.find(";", pos1 + 1);
-    int pos3 = textLine.find(";", pos2 + 1);
-    pos.timeStamp.push_back(textLine.substr(0, pos1));
-    pos.accelXaxis.push_back(textLine.substr(pos1 + 1, pos2 - pos1 - 1));
-    pos.accelYaxis.push_back(textLine.substr(pos2 + 1, pos3 - pos2 - 1));
-    pos.accelZaxis.push_back(textLine.substr(pos3 + 1, textLine.length() - pos3 - 1));
-}
 void readIputFile(string fileName, position& pos) {
     cout << "Reading input file..." << endl;
 
@@ -48,6 +39,16 @@ void readIputFile(string fileName, position& pos) {
     }
 
     inputFile.close();
+}
+
+void extractVariables(string textLine, position& pos) {
+    int pos1 = textLine.find(";");
+    int pos2 = textLine.find(";", pos1 + 1);
+    int pos3 = textLine.find(";", pos2 + 1);
+    pos.timeStamp.push_back(textLine.substr(0, pos1));
+    pos.accelXaxis.push_back(textLine.substr(pos1 + 1, pos2 - pos1 - 1));
+    pos.accelYaxis.push_back(textLine.substr(pos2 + 1, pos3 - pos2 - 1));
+    pos.accelZaxis.push_back(textLine.substr(pos3 + 1, textLine.length() - pos3 - 1));
 }
 
 void creatOutputFile(attitude& att) {
