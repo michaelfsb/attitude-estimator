@@ -60,7 +60,7 @@ void creatOutputFile(attitude& att) {
     ofstream outputFile("attitude_result.log");
     
     for (int i = 0; i < att.timeStamp.size(); i++) {
-        outputFile << att.timeStamp[i] << att.roll[i] << "; " << att.pitch[i] << endl;
+        outputFile << att.timeStamp[i] << "; " << att.roll[i] << "; " << att.pitch[i] << endl;
     }
 
     outputFile.close();
