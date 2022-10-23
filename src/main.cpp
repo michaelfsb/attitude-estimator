@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 struct attitude {
@@ -17,6 +18,8 @@ void readIputFile(position& pos);
 
 void creatOutputFile(attitude& att);
 
+attitude calculateAttitude(position& pos);
+
 int main(int, char**) {
 
     position pos;
@@ -24,13 +27,8 @@ int main(int, char**) {
     
     readIputFile(pos);
 
-    // test output file
-    att.timeStamp.push_back("0");
-    att.timeStamp.push_back("0");
-    att.roll.push_back("1");
-    att.pitch.push_back("2");
-    att.roll.push_back("3");
-    att.pitch.push_back("4");
+    att = calculateAttitude(pos);
+
     creatOutputFile(att);
 }
 
@@ -66,4 +64,19 @@ void creatOutputFile(attitude& att) {
     }
 
     outputFile.close();
+}
+
+attitude calculateAttitude(position& pos){
+    attitude att;
+    float roll, pitch;
+
+    for (int i = 0; i < pos.timeStamp.size(); i++) {
+        att.timeStamp.push_back(pos.timeStamp[i]);
+        roll = atan2(stof(pos.accelYaxis[i]), stof(pos.accelZaxis[i])) * 180 / M_PI;
+        pitch = atan2(-stof(pos.accelXaxis[i]), sqrt(pow(stof(pos.accelYaxis[i]),2) + pow(stof(pos.accelYaxis[i]),2))) * 180 / M_PI;
+        att.roll.push_back(to_string(roll));
+        att.pitch.push_back(to_string(pitch));
+    }
+
+    return att; 
 }
