@@ -1,5 +1,17 @@
 # Attitude Estimator
 
+This code estimates the angles roll and pitch using an accelerometer dataset. A file with a generic name is read, and a file with the name attitude_result.log is generated, as shown in this diagram. 
+
+```mermaid
+  graph LR;
+      input_file-->AttitudeEstimator;
+      AttitudeEstimator-->attitude_result.log;
+```
+
+The input file name, <input file>, is a parameter that must be passed when calling the main function. This file must be follow the pattern: <time_stamp_ms; accel_x_axis; accel_y_axis; accel_z_axis>. 
+
+The output file is generated in the same path that complied code, and this file follows the pattern: <time_stamp_ms; roll; pitch>. The unit of this angle is degree.
+
 To build and execute the project, run
 
     $ mkdir build
@@ -7,3 +19,4 @@ To build and execute the project, run
     $ cmake ..
     $ make
     $ ./AttitudeEstimator <input file>
+
