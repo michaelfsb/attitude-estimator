@@ -2,11 +2,16 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
     position pos;
     attitude att;
 
-    readIputFile(pos);
+    if (argc != 2) {
+        cout << "Usage: " << argv[0] << " <input file>" << endl;
+        return 1;
+    }
+
+    readIputFile(argv[1], pos);
 
     if (pos.timeStamp.size() == 0) {
         cout << "No data in input file" << endl;
@@ -30,12 +35,12 @@ void extractVariables(string textLine, position& pos) {
     pos.accelYaxis.push_back(textLine.substr(pos2 + 1, pos3 - pos2 - 1));
     pos.accelZaxis.push_back(textLine.substr(pos3 + 1, textLine.length() - pos3 - 1));
 }
-void readIputFile(position& pos) {
+void readIputFile(string fileName, position& pos) {
     cout << "Reading input file..." << endl;
 
     string textLine;
     vector<string> seglist;
-    ifstream inputFile("attitude_exam.log");
+    ifstream inputFile(fileName);
 
     while (getline(inputFile, textLine)) {
         seglist.push_back(textLine);

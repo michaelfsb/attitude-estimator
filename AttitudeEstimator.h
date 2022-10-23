@@ -20,7 +20,7 @@ struct position {
 
 void extractVariables(string textLine, position& pos); \
 
-void readIputFile(position& pos);
+void readIputFile(string fileName, position& pos);
 
 void creatOutputFile(attitude& att);
 
