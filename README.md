@@ -20,3 +20,17 @@ To build and execute the project, run
     $ make
     $ ./AttitudeEstimator <input file>
 
+## Estimation calculation
+
+The estimation calculation of pitch $\theta_{xyz}$ and roll $\phi_{xyz}$ is done from the following equations:
+
+$$
+\theta_{xyz}=\tan^{-1}{\frac{-G_{px}}{\sqrt{G_{py}^2 + G_{pz}^2}}},
+$$
+
+$$
+\phi_{xyz}=\tan^{-1}{\frac{G_{py}}{G_{pz}}},
+$$
+
+whrer $G_{px}$ is the acceleration in the $x$ axis, $G_{py}$ is the acceleration in the $y$ axis, and $G_{pz}$ is the acceleration in the $z$ axis.
+To obtain the angle in the correct quadrant, the function ATAN2 was used.
