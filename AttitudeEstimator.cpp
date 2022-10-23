@@ -2,18 +2,23 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     position pos;
     attitude att;
 
     readIputFile(pos);
 
+    if (pos.timeStamp.size() == 0) {
+        cout << "No data in input file" << endl;
+        return 0;
+    }
+
     att = calculateAttitude(pos);
 
     creatOutputFile(att);
-	
-	return 0;
+
+    cout << "Done!" << endl;
+    return 0;
 }
 
 void extractVariables(string textLine, position& pos) {
@@ -25,11 +30,11 @@ void extractVariables(string textLine, position& pos) {
     pos.accelYaxis.push_back(textLine.substr(pos2 + 1, pos3 - pos2 - 1));
     pos.accelZaxis.push_back(textLine.substr(pos3 + 1, textLine.length() - pos3 - 1));
 }
-
 void readIputFile(position& pos) {
+    cout << "Reading input file..." << endl;
+
     string textLine;
     vector<string> seglist;
-
     ifstream inputFile("attitude_exam.log");
 
     while (getline(inputFile, textLine)) {
@@ -41,6 +46,8 @@ void readIputFile(position& pos) {
 }
 
 void creatOutputFile(attitude& att) {
+    cout << "Creating output file..." << endl;
+    
     ofstream outputFile("attitude_result.log");
 
     for (int i = 0; i < att.timeStamp.size(); i++) {
@@ -51,6 +58,8 @@ void creatOutputFile(attitude& att) {
 }
 
 attitude calculateAttitude(position& pos) {
+    cout << "Calculating attitude..." << endl;
+
     attitude att;
     double roll, pitch;
 
